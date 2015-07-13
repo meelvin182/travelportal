@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<f:view contentType="text/html" locale="en">
+    <f:metadata>
+        <f:viewParam name="office-id" value="#{officeBean.id}"/>
+    </f:metadata>
+
+    <h:head>
+        <c:if test="#{officeBean.id == null}" >
+            <title>New office</title>
+        </c:if>
+        <c:if test="#{officeBean.id != null}" >
+            <title>Edit office</title>
+        </c:if>
+    </h:head>
+
+    <h:body>
+        <h:form id="office">
+            <h:panelGrid columns="3">
+                <p:outputLabel value="Name:" />
+                <p:inputText id="Name" value="#{officeBean.name}" required="true" style="width: 250px;"/>
+
+                <p:outputLabel value="Adress:" />
+                <p:inputText id="Adress" value="#{officeBean.address}" required="true" style="width: 250px;"/>
+
+                <p:outputLabel value="City:" />
+                <p:selectOneMenu id="City" value="#{officeBean.cityId}" required="true" style="width: 250px;">
+                    <c:forEach var="city" items="#{officeBean.cities}">
+                        <f:selectItem itemLabel="#{city.name}" itemValue="#{city.id}"/>
+                    </c:forEach>
+                </p:selectOneMenu>
+
+                <p:commandButton value="Save" actionListener="#{cityBean.save()}" process="@(form:last)" />
+            </h:panelGrid>
+            <p:messages showSummary="false" showDetail="true" autoUpdate="true" closable="true" />
+        </h:form>
+    </h:body>
+</f:view>
+</html>

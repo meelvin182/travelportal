@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    #{hello.str}
+    <h:form>
+        <h:panelGrid columns="2">
+            <h:outputLabel value="Write query here"/>
+            <h:inputText id="query" value="#{ScriptExecuter.query}" size="150"/>
+        </h:panelGrid>
+        <h:commandButton value="execute select" action="#{ScriptExecuter.submit()}"/>
+        <h:commandButton value="execute DML" action="#{ScriptExecuter.DML()}"/>
+
+        <h:commandButton value="revert" action="#{ScriptExecuter.revert()}"/>
+
+    </h:form>
+    <c:if test="#{not empty ScriptExecuter.query}">
+        <p>Hi</p>
+        <h:outputText value="#{ScriptExecuter.query}"/>
+        <br/>
+        <h:outputText value="#{ScriptExecuter.list}"/>
+        <br/>
+    </c:if>
+
+    <br/>
+    <br/>
+    <h:outputText value="#{TravelSupport.user.user.id}"/>
+    <br/>
+    <h:outputText value="#{TravelSupport.user.user.employee.id}"/>
+    <br/>
+    <h:outputText value="#{TravelSupport.user.user.employee.name}"/>
+    <br/>
+    <h:outputText value="#{TravelSupport.user.user.employee.lastName}"/>
+    <br/>
+    <h:outputText value="#{TravelSupport.user.user.employee.officeId}"/>
+    <br/>
+    <h:outputText value="#{TravelSupport.user.user.employee.office.address}"/>
+    <br/>
+    <h:outputText value="#{TravelSupport.user.user.employee.office.city.name}"/>
+    <br/>
+    <h:outputText value="#{TravelSupport.user.user.employee.office.cityId}"/>
+    <br/>
+    <h:outputText value="#{TravelSupport.user.user.employee.office.city.country.name}"/>
+    <br/>
+    <h:outputText value="#{TravelSupport.user.user.employee.office.city.countryId}"/>
+
+
+
+
+    <br/>
+    <br/>
+
+    <h:form>
+        <h:commandLink value="logout" actionListener="#{ScriptExecuter.logout}"/>
+    </h:form>
+    <br/>
+    <br/>
+    <h:outputText value="#{ScriptExecuter.hash}"/>
+</ui:composition>

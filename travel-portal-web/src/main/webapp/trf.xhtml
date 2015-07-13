@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+    <c:if test="#{not empty trfViewBean.trf}">
+    <h:form>
+        <p:panel header="Editing TRF">
+            <h:panelGrid columns="2" cellpadding="5">
+
+                <p:outputLabel for="status" value="Status: " />
+                <h:outputText id="status" value="#{trfViewBean.trf.getStatus().getValue()}" />
+
+                <p:outputLabel for="employee" value="Employee Name: " />
+                <p:selectOneMenu id="employee" value="#{trfViewBean.trf.employee}" effect="fold" editable="true">
+                    <f:selectItem itemLabel="#{trfViewBean.trf.employee.name}" itemValue="" />
+                    <f:selectItems value="#{trfViewBean.employees}" var="employee" itemLabel="#{employee.name}" itemValue="#{employee}"/>
+                </p:selectOneMenu>
+
+
+                <p:outputLabel for="office" value="Office:" />
+                <h:outputText id="office" value="#{trfViewBean.trf.employee.office.name}" />
+
+                <p:outputLabel for="departure" value="Departure Date:" />
+                <p:calendar id="departure" value="#{trfViewBean.trf.departureDate}" showOn="button" />
+
+                <p:outputLabel for="return" value="Return Date:" />
+                <p:calendar id="return" value="#{trfViewBean.trf.returnDate}" showOn="button" />
+
+                <p:outputLabel for="dest_city" value="Destination Country: " />
+                <p:selectOneMenu id="dest_city" value="#{trfViewBean.trf.destCity}" effect="fold" editable="true">
+                    <f:selectItem itemLabel="#{trfViewBean.trf.destCity.name}, #{trfViewBean.trf.destCity.country.name}" itemValue="" />
+                    <f:selectItems value="#{trfViewBean.cities}" var="city" itemLabel="#{city.name}" itemValue="#{city}"/>
+                </p:selectOneMenu>
+
+                <p:outputLabel for="line_manager" value="Line Manager:" />
+                <h:outputText id="line_manager" value="#{trfViewBean.trf.employee.manager.name}" />
+
+                <p:outputLabel for="project_manager" value="Project Manager:" />
+                <p:selectOneMenu id="project_manager" value="#{trfViewBean.trf.projectManager}" effect="fold" editable="true">
+                    <f:selectItem itemLabel="#{trfViewBean.trf.projectManager.name}" itemValue="" />
+                    <f:selectItems value="#{trfViewBean.employees}" var="employee" itemLabel="#{employee.name}" itemValue="#{employee}"/>
+                </p:selectOneMenu>
+
+                <p:outputLabel for="hotel_name" value="Hotel Name:" />
+                <h:outputText id="hotel_name" value="#{trfViewBean.trf.hotel}" />
+
+                <p:outputLabel for="customer" value="Customer:" />
+                <p:selectOneMenu id="customer" value="#{trfViewBean.trf.customer}" effect="fold" editable="true">
+                    <f:selectItem itemLabel="#{trfViewBean.trf.customer.name}" itemValue="" />
+                    <f:selectItems value="#{trfViewBean.customers}" var="customer" itemLabel="#{customer.name}" itemValue="#{customer}"/>
+                </p:selectOneMenu>
+
+                <p:outputLabel for="car_rental" value="Car Rental:" />
+                <p:selectBooleanCheckbox id="car_rental" value="#{trfViewBean.trf.carRent}" />
+
+                <p:outputLabel for="pay_cash" value="Pay By Cash:" />
+                <p:selectBooleanCheckbox id="pay_cash" value="#{trfViewBean.trf.payCash}" />
+
+            </h:panelGrid>
+
+            <p:accordionPanel>
+                <p:tab title="Status History:">
+                    <p:dataTable var="status" value="#{trfViewBean.trf.statusHistory}">
+                        <p:column headerText="Date">
+                            <h:outputText value="#{status.changeTime}" />
+                        </p:column>
+
+                        <p:column headerText="New Status">
+                            <h:outputText value="#{status.status.statusName}" />
+                        </p:column>
+
+                        <p:column headerText="Who">
+                            <h:outputText value="#{status.user.name}" />
+                        </p:column>
+
+                        <p:column headerText="Comment">
+                            <h:outputText value="#{status.comment}" />
+                        </p:column>
+                    </p:dataTable>
+                </p:tab>
+            </p:accordionPanel>
+
+            <p:separator />
+            <p:commandButton value="Submit" oncomplete="PF('dlg').show()" icon="ui-icon-check" />
+
+        </p:panel>
+    </h:form>
+    </c:if>
+</h:head>
+</html>

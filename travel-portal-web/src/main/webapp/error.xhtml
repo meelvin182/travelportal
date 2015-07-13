@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:func="http://jsf.travelportal.ipccenter.ru/functions">
+<h:head>
+    <title>You have encountered a system error!!</title>
+    <h:outputStylesheet>
+        .preformatted {
+            white-space: pre-wrap;
+            height: 675px;
+        }
+    </h:outputStylesheet>
+</h:head>
+<h:body>
+    <h:form>
+        <p:toolbar>
+            <f:facet name="right">
+                <p:commandButton value="Logout" actionListener="#{logoutListener.logout()}" icon=" ui-icon-closethick" />
+            </f:facet>
+        </p:toolbar>
+    </h:form>
+    <h:form>
+        <p:tabView>
+            <p:tab title="Error">
+                <p:outputPanel>
+                    <p:scrollPanel styleClass="preformatted" style="overflow: scroll !important;">
+                        <h:outputText escape="false" value="#{func:printStackTrace(requestScope['javax.servlet.error.exception'])}" />
+                    </p:scrollPanel>
+                </p:outputPanel>
+            </p:tab>
+        </p:tabView>
+    </h:form>
+</h:body>
+</html>

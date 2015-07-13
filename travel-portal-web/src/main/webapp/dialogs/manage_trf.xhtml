@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:c="http://java.sun.com/jsp/jstl/core" xml:lang="en" lang="en"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+    <title>TRF</title>
+</h:head>
+<body>
+<h:form id="form">
+    <p:growl id="msgs" showDetail="true" />
+    <!--<p:growl id="growl" life="2000" />-->
+
+    <h:panelGrid columns="2" cellpadding="5">
+        <c:if test="#{TRFManager.isNotTravelSupport()}">
+        <p:outputLabel value="Employee:"/>
+        <p:selectOneMenu value="#{TRFManager.employee}" style="width:125px">
+            <c:forEach var="employee" items="#{TRFManager.employees}">
+                <f:selectItem itemLabel="#{employee}" itemValue="#{employee}" />
+            </c:forEach>
+        </p:selectOneMenu>
+        </c:if>
+        <p:outputLabel for="popup" value="Departure date:" />
+        <p:calendar id="popup" value="#{TRFManager.departureDate}" />
+
+        <p:outputLabel for="return" value="Return date:" />
+        <p:calendar id="return" value="#{TRFManager.returnDate}" />
+
+        <p:outputLabel value="Car rent: " />
+        <p:selectBooleanCheckbox value="#{TRFManager.carRent}" />
+
+        <p:outputLabel value="Pay cash: " />
+        <c:if test="#{logoutListener.employee}">
+            <p:selectBooleanCheckbox value="#{TRFManager.payCash}" disabled="true" />
+        </c:if>
+        <c:if test="#{!logoutListener.employee}">
+            <p:selectBooleanCheckbox value="#{TRFManager.payCash}" disabled="false" />
+        </c:if>
+
+        <p:outputLabel value="City:" />
+        <p:selectOneMenu value="#{TRFManager.destCity}" style="width:125px">
+            <f:selectItem itemLabel="Select One" itemValue="" />
+            <c:forEach var="city" items="#{TRFManager.allCities}">
+                <f:selectItem itemLabel="#{city}" itemValue="#{city}" />
+            </c:forEach>
+        </p:selectOneMenu>
+
+        <p:outputLabel value="Hotel:" />
+        <p:inputText value="#{TRFManager.hotel}"/>
+
+        <p:outputLabel value="Customer:" />
+        <p:selectOneMenu value="#{TRFManager.customer}" style="width:125px">
+            <f:selectItem itemLabel="Select One" itemValue="" />
+            <c:forEach var="customer" items="#{TRFManager.allCustomers}">
+                <f:selectItem itemLabel="#{customer}" itemValue="#{customer}" />
+            </c:forEach>
+        </p:selectOneMenu>
+    </h:panelGrid>
+
+    <p:commandButton value="Submit" actionListener="#{TRFManager.submit}"/>
+    <p:commandButton value="Cancel TRF" actionListener="#{TRFManager.cancel}"/>
+    <c:if test="#{!logoutListener.employee}">
+        <p:commandButton value="Reject TRF" actionListener="#{TRFManager.reject}"/>
+    </c:if>
+
+    <!--<h:commandButton value="Back" action="index.xhtml"/>-->
+
+    <p:dialog modal="true" resizable="false" header="Values" widgetVar="dlg" showEffect="fold">
+        <p:panelGrid id="display" columns="2" columnClasses="label,value">
+            <h:outputText value="Departure date:" />
+            <h:outputText value="#{TRFManager.departureDate}">
+                <f:convertDateTime pattern="MM-dd-yyyy" />
+            </h:outputText>
+
+            <h:outputText value="Return date:" />
+            <h:outputText value="#{TRFManager.returnDate}">
+                <f:convertDateTime pattern="MM-dd-yyyy" />
+            </h:outputText>
+        </p:panelGrid>
+    </p:dialog>
+</h:form>
+
+
+<c:if test="#{not empty TRFManager.statusHistoryEntries}">
+    <p:dataTable id="statusHistory" var="entry" value="#{TRFManager.statusHistoryEntries}"
+                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                 paginator="true" rows="10" style="margin-bottom:20px">
+
+        <p:column>
+            <f:facet name="header">
+                <h:outputText value="Date" />
+            </f:facet>
+            <h:outputText value="#{entry.changeTime}" />
+        </p:column>
+
+        <p:column>
+            <f:facet name="header">
+                <h:outputText value="Status"/>
+            </f:facet>
+            <h:outputText value="#{entry.status.value}" />
+        </p:column>
+
+        <p:column>
+            <f:facet name="header">
+                <h:outputText value="Who" />
+            </f:facet>
+            <h:outputText value="#{entry.user.name}" />
+        </p:column>
+
+        <p:column>
+            <f:facet name="header">
+                <h:outputText value="Comment" />
+            </f:facet>
+            <h:outputText value="#{entry.comment}" />
+        </p:column>
+
+    </p:dataTable>
+</c:if>
+
+
+
+</body>
+</html>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration PUBLIC
+        "-//APACHE//DTD LOG4J 1.2//EN" "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
+
+<log4j:configuration>
+    <appender name="error" class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="threshold" value="error"/>-->
+        <param name="File" value="/opt/wildfly/TravelPortal/logs/error.log"/>
+        <param name="MaxFileSize" value="512kB"/>
+        <param name="MaxBackupIndex" value="10"/>
+
+        <layout class="org.apache.log4j.EnhancedPatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{20}.%M:%L - %m%n"/>
+        </layout>
+
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="ERROR"/>
+            <param name="LevelMax" value="FATAL"/>
+        </filter>
+    </appender>
+
+    <appender name="trace" class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="threshold" value="info"/>-->
+        <param name="File" value="/opt/wildfly/TravelPortal/logs/trace.log"/>
+        <param name="MaxFileSize" value="512kB"/>
+        <param name="MaxBackupIndex" value="10"/>
+
+        <layout class="org.apache.log4j.EnhancedPatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{20}.%M:%L - %m%n"/>
+        </layout>
+
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="TRACE"/>
+            <param name="LevelMax" value="FATAL"/>
+        </filter>
+    </appender>
+
+    <appender name="info" class="org.apache.log4j.RollingFileAppender">
+        <!--<param name="threshold" value="info"/>-->
+        <param name="File" value="/opt/wildfly/TravelPortal/logs/info.log"/>
+        <param name="MaxFileSize" value="512kB"/>
+        <param name="MaxBackupIndex" value="10"/>
+
+        <layout class="org.apache.log4j.EnhancedPatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{20}.%M:%L - %m%n"/>
+        </layout>
+
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="INFO"/>
+            <param name="LevelMax" value="FATAL"/>
+        </filter>
+    </appender>
+
+    <logger name="ru.ipccenter.travelportal" additivity="false">
+        <level value="trace"/>
+        <appender-ref ref="trace"/>
+        <!--<appender-ref ref="error" />-->
+    </logger>
+</log4j:configuration>

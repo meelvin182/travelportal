@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+    <f:view contentType="text/html" locale="en">
+        <f:metadata>
+            <f:viewParam name="employee-id" value="#{employeeBean.id}"/>
+        </f:metadata>
+        <h:head>
+            <title>Edit employee</title>
+        </h:head>
+
+        <h:body>
+            <p:ajaxStatus onstart="PrimeFaces.widgets.statusDialog.show();" onsuccess="PrimeFaces.widgets.statusDialog.hide();"/>
+
+            <p:dialog modal="true" widgetVar="statusDialog" showHeader="false"  draggable="false" closable="false" resizable="false">
+                <p:graphicImage value="/images/ajaxloadingbar.gif" />
+            </p:dialog>
+
+            <h:form id="employee">
+                <p:messages showSummary="false" showDetail="true" autoUpdate="true" closable="true" />
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="Department:" />
+                    <p:outputLabel id="Department" value="#{employeeBean.department.name}" />
+
+                    <p:outputLabel value="Manager:" />
+                    <p:outputLabel id="Manager" value="#{employeeBean.managerName}" />
+
+                    <p:outputLabel value="Name:" />
+                    <p:inputText id="Name" value="#{employeeBean.name}" required="true"/>
+
+                    <p:outputLabel value="Last Name:" />
+                    <p:inputText id="Last_Name" value="#{employeeBean.lastName}" required="true"/>
+
+                    <p:outputLabel value="e-mail:" />
+                    <p:inputText id="e-mail" value="#{employeeBean.email}" required="true"/>
+
+                    <p:outputLabel value="Office:" />
+                    <p:selectOneMenu id="Office" value="#{employeeBean.officeId}" style="width: 100%">
+                        <c:forEach var="office" items="#{employeeBean.offices}">
+                            <f:selectItem itemLabel="#{office.name}" itemValue="#{office.id}"/>
+                        </c:forEach>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Position:" />
+                    <p:selectOneMenu id="Position" value="#{employeeBean.positionId}" style="width: 100%">
+                        <c:forEach var="position" items="#{employeeBean.positions}">
+                            <f:selectItem itemLabel="#{position.name}" itemValue="#{position.id}"/>
+                        </c:forEach>
+                    </p:selectOneMenu>
+
+                    <c:if test="#{employeeBean.hasUser}" >
+                        <p:outputLabel value="Login:" />
+                        <p:inputText id="Login" value="#{employeeBean.userName}" required="true" />
+
+                        <p:outputLabel value="Password:" />
+                        <p:password id="Password" value="#{employeeBean.password}" required="true"/>
+
+                        <p:outputLabel value="Role:" />
+                        <p:selectOneMenu id="Role" value="#{employeeBean.roleId}" style="width: 100%" required="true">
+                            <c:forEach var="role" items="#{employeeBean.roles}">
+                                <f:selectItem itemLabel="#{role.name}" itemValue="#{role.id}"/>
+                            </c:forEach>
+                        </p:selectOneMenu>
+                    </c:if>
+                </h:panelGrid>
+                <h:panelGrid columns="2">
+                    <p:commandButton value="Save" actionListener="#{employeeBean.saveEmployee()}" process="@(form:last)" />
+                    <c:if test="#{!employeeBean.hasUser}" >
+                        <p:commandButton value="Create User for employee" actionListener="#{employeeBean.createUser()}" process="@this" update="@(form:last)"/>
+                    </c:if>
+                </h:panelGrid>
+            </h:form>
+        </h:body>
+    </f:view>
+</html>

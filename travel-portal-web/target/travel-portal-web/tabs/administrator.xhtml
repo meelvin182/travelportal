@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:outputStylesheet>
+        .ui-tree-container {
+            height: 525px;
+        }
+
+        .employee-table > .ui-datatable-tablewrapper {
+            height: 330px;
+        }
+    </h:outputStylesheet>
+
+    <h:form>
+        <p:toolbar>
+            <f:facet name="left">
+                <p:menuButton value="Cities">
+                    <p:menuitem value="Show cities" icon="ui-icon-extlink" actionListener="#{adminToolbarBean.openShowCities}" process="@this"/>
+                    <p:menuitem value="Create city" icon="ui-icon-plus" actionListener="#{adminToolbarBean.openCreateCity}" process="@this"/>
+                </p:menuButton>
+
+                <span class="ui-separator" />
+
+                <p:menuButton value="Offices">
+                    <p:menuitem value="Show offices" icon="ui-icon-extlink" actionListener="#{adminToolbarBean.openShowOffices}"  process="@this"/>
+                    <p:menuitem value="Create office" icon="ui-icon-plus" actionListener="#{adminToolbarBean.openCreateOffice}" process="@this"/>
+                </p:menuButton>
+
+                <span class="ui-separator" />
+
+                <p:menuButton value="Customers">
+                    <p:menuitem value="Show customers" icon="ui-icon-extlink" actionListener="#{adminToolbarBean.openShowCustomers}" process="@this"/>
+                    <p:menuitem value="Create customer" icon="ui-icon-plus" actionListener="#{adminToolbarBean.openCreateCustomer}" process="@this"/>
+                </p:menuButton>
+
+            </f:facet>
+
+            <f:facet name="right">
+                <p:commandButton value="Exit" process="@this" actionListener="#{logoutListener.logout}" icon=" ui-icon-closethick" />
+            </f:facet>
+        </p:toolbar>
+    </h:form>
+
+    <h:panelGrid columns="1">
+        <h:form>
+            <p:remoteCommand name="newDepartment"
+                             actionListener="#{adminBean.tree.newDepartment()}"
+                             update="tree,messages,department-view"
+                             process="@this"
+                              />
+            <p:remoteCommand name="delDepartment"
+                             actionListener="#{adminBean.tree.deleteDepartment()}"
+                             update="tree,messages,department-view"
+                             process="@this"
+                              />
+
+            <p:growl id="messages" showSummary="true" showDetail="true" escape="false" />
+
+            <p:contextMenu for="tree">
+                <p:menuitem value="New" icon="ui-icon-document"
+                            onclick="newDepartment()" />
+                <p:menuitem value="Delete" icon="ui-icon-close"
+                            onclick="delDepartment()" />
+            </p:contextMenu>
+
+            <h:panelGrid columns="2">
+                <p:tree id="tree" value="#{adminBean.tree.root}" var="node"
+                        dynamic="true"
+                        selectionMode="single"
+                        selection="#{adminBean.tree.selectedNode}">
+
+                    <p:treeNode expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
+                        <h:outputText value="#{node.toString()}" />
+                    </p:treeNode>
+
+                    <p:ajax event="select" listener="#{adminBean.tree.onNodeSelect}" update="@(form:last)" />
+                    <p:ajax event="contextMenu" listener="#{adminBean.tree.onNodeSelect}"  />
+                </p:tree>
+
+                <p:outputPanel  id="department-view" rendered="#{adminBean.showEditor()}">
+                    <p:commandButton type="button" value="Save" icon="ui-icon-disk" style="float: right;">
+                        <p:ajax event="click" process="@(form:last)" update="@(form:last)" listener="#{adminBean.saveDepartment}" />
+                    </p:commandButton>
+
+                    <h:panelGrid columns="2">
+                        <p:outputLabel for="name" value="Department name:" />
+                        <p:inputText id="name" value="#{adminBean.departmentInfo.name}">
+                            <p:ajax event="keyup" process="@this"  />
+                        </p:inputText>
+
+                        <!--<p:outputLabel for="role" value="Roles:" />-->
+                        <!--<p:selectOneRadio id="role" value="#{adminBean.departmentInfo.type}">-->
+                                <!--<c:forEach items="#{adminBean.departmentTypes}" var="type">-->
+                                    <!--<f:selectItem itemLabel="#{type.roleName}" itemValue="#{type}" />-->
+                                <!--</c:forEach>-->
+                            <!--<p:ajax event="change" process="@this"  />-->
+                        <!--</p:selectOneRadio>-->
+
+                        <p:outputLabel value="Manager:" for="manager"  />
+                        <p:selectOneMenu id="manager" value="#{adminBean.departmentInfo.managerId}" style="width: 100%" >
+                            <c:forEach var="employee" items="#{adminBean.departmentInfo.employees}">
+                                <f:selectItem itemLabel="#{employee.name} #{employee.lastName}" itemValue="#{employee.id}" />
+                            </c:forEach>
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+
+                    <p:toolbar>
+                        <f:facet name="left">
+                            <p:commandButton process="@this" actionListener="#{adminBean.createEmployee}" icon="ui-icon-plus" update="messages,department-view"/>
+                            <span class="ui-separator" />
+                            <p:commandButton process="@this,emp-table" actionListener="#{adminBean.editEmployee}" icon="ui-icon-note">
+                                <p:ajax event="dialogReturn" listener="#{adminBean.onEditEmployeeReturn}" update="@(form:last)" />
+                            </p:commandButton>
+                            <span class="ui-separator" />
+                            <p:commandButton process="@this,emp-table" actionListener="#{adminBean.deleteEmployee}" icon="ui-icon-trash" update="messages,department-view"/>
+                        </f:facet>
+                    </p:toolbar>
+
+                    <p:dataTable widgetVar="emp-table" id="emp-table" var="employee" value = "#{adminBean.departmentInfo.employees}" rowKey="#{employee.id}"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                 rows="10" paginator="true" paginatorPosition="bottom"
+                                 selectionMode="single" selection="#{adminBean.departmentInfo.selectedEmployee}"
+                                 styleClass="employee-table">
+                        <p:ajax event="rowSelect" process="@this" />
+
+                        <p:column headerText="Name">
+                            <h:outputText value="#{employee.name}" />
+                        </p:column>
+
+                        <p:column headerText="Last name">
+                            <h:outputText value="#{employee.lastName}" />
+                        </p:column>
+
+                        <p:column headerText="e-mail">
+                            <h:outputText value="#{employee.email}" />
+                        </p:column>
+                    </p:dataTable>
+                </p:outputPanel>
+            </h:panelGrid>
+        </h:form>
+    </h:panelGrid>
+
+
+
+                <!--<p:dialog header="NewEmployee" widgetVar="NewEmployee" modal="true" height="450" width="450">-->
+                    <!--<h:form>-->
+                        <!--<h:panelGrid columns="2" cellpadding="5">-->
+                            <!--<p:outputLabel value="First name: " for="firstName"/>-->
+                            <!--<p:inputText id="firstName" value="#{AdminView.firstName}"/>-->
+
+
+                            <!--<p:outputLabel value="Second name: " for="secondName"/>-->
+                            <!--<p:inputText id="secondName" value="#{AdminView.secondName}"/>-->
+
+
+                            <!--<p:outputLabel value="Position: " for="position" />-->
+                            <!--<p:selectOneMenu id="position" value="#{AdminView.position}" style="width:100%" >-->
+                                <!--<f:selectItem itemLabel="Choose position" itemValue="" />-->
+                                <!--<c:forEach var="position" items="#{AdminView.positions}">-->
+                                    <!--<f:selectItem itemLabel="#{position.name}" itemValue="#{position}" />-->
+                                <!--</c:forEach>-->
+                            <!--</p:selectOneMenu>-->
+
+                            <!--<p:outputLabel value="Office: " for="office"  />-->
+                            <!--<p:selectOneMenu id="office" value="#{AdminView.office}" style="width:100%">-->
+                                <!--<f:selectItem itemLabel="Choose office" itemValue="" />-->
+                                <!--<c:forEach var="office" items="#{AdminView.offices}">-->
+                                    <!--<f:selectItem itemLabel="#{office.name}" itemValue="#{office}" />-->
+                                <!--</c:forEach>-->
+                            <!--</p:selectOneMenu>-->
+
+                            <!--<p:outputLabel value="e-mail: " for="email"/>-->
+                            <!--<p:inputText id="email" value="#{AdminView.email}" />-->
+
+                            <!--<p:outputLabel value="login: " for="login" />-->
+                            <!--<p:inputText id="login" value="#{AdminView.login}"/>-->
+
+                            <!--<h:outputText value="password: " for="password" />-->
+                            <!--<p:password  id="password" value="#{AdminView.password}"/>-->
+
+                            <!--<h:outputText value="salt: " for="salt" />-->
+                            <!--<p:password  id="salt" value="#{AdminView.salt}"/>-->
+                        <!--</h:panelGrid>-->
+
+                        <!--<p:commandButton value="Create" actionListener="#{AdminView.createEmployee}"  />-->
+                    <!--</h:form>-->
+                <!--</p:dialog>-->
+</ui:composition>

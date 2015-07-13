@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<f:view contentType="text/html" locale="en">
+    <h:head>
+        <title>Cities</title>
+        <h:outputStylesheet>
+            .employee-table > .ui-datatable-tablewrapper {
+                height: 447px;
+            }
+        </h:outputStylesheet>
+    </h:head>
+
+    <h:body>
+        <p:ajaxStatus onstart="PrimeFaces.widgets.statusDialog.show();" onsuccess="PrimeFaces.widgets.statusDialog.hide();"/>
+
+        <p:dialog modal="true" widgetVar="statusDialog" showHeader="false"  draggable="false" closable="false" resizable="false">
+            <p:graphicImage value="/images/ajaxloadingbar.gif" />
+        </p:dialog>
+
+        <h:form id="city-list">
+            <p:dataTable widgetVar="cityTable" id="cityTable" var="city" value = "#{cityListBean.cities}" rowKey="#{cityBean.id}"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                         rows="10" paginator="true" paginatorPosition="bottom"
+                         styleClass="employee-table">
+
+                <p:column headerText="Name">
+                    <h:outputText value="#{city.name}" />
+                </p:column>
+
+                <p:column headerText="Country">
+                    <h:outputText value="#{city.country.name}" />
+                </p:column>
+
+                <p:column>
+                    <p:commandButton icon="ui-icon-trash" actionListener="#{cityListBean.deleteCity(city.id)}" process="@this" update="cityTable" ajax="return update" />
+                </p:column>
+            </p:dataTable>
+
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+        </h:form>
+    </h:body>
+</f:view>
+</html>

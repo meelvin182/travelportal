@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:outputScript name="jquery/jquery-plugins.js" library="primefaces"/>
+
+    <h:form>
+        <p:growl id="growl" showDetail="true" />
+        <p:toolbar>
+            <f:facet name="right">
+                <p:commandButton value="Exit" process="@form" actionListener="#{logoutListener.logout}" icon=" ui-icon-closethick" />
+            </f:facet>
+        </p:toolbar>
+    </h:form>
+
+    <h:panelGrid columns="1">
+        <h:outputText value="In progress TRF:"/>
+
+        <p:dataTable id="editbl" var="entry" value="#{TravelSupport.inProgressTRFs}"
+                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                     paginator="true" rows="10" paginatorPosition="bottom" style="margin-bottom:20px">
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Name" />
+                </f:facet>
+                <h:form id="editform">
+                    <p:growl id="growl2" showDetail="true" />
+                    <p:commandLink value="#{entry.name}" process="editform" actionListener="#{TravelSupport.editTRF(entry.trfId)}">
+                        <p:ajax event="dialogReturn" listener="#{Employee.addMessage}" update="growl2" />
+                        <f:param name="trfId" value="#{entry.trfId}"/>
+                    </p:commandLink>
+                </h:form>
+            </p:column>
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Employee" />
+                </f:facet>
+                <h:outputText value="#{entry.employeeInfo.name} #{entry.employeeInfo.lastName}" />
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="City" />
+                </f:facet>
+                <h:outputText value="#{entry.destCity}" />
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Departure date" />
+                </f:facet>
+                <h:outputText value="#{entry.departureDate}" />
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Return date" />
+                </f:facet>
+                <h:outputText value="#{entry.returnDate}" />
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Status"/>
+                </f:facet>
+                <h:outputText value="#{entry.status}" />
+            </p:column>
+
+        </p:dataTable>
+
+        <h:outputText value="All my TRFs"/>
+
+        <p:dataTable id="tbl" var="entry" value="#{TravelSupport.allTRFs}"
+                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                     paginator="true" rows="10" paginatorPosition="bottom" style="margin-bottom:20px">
+
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Employee" />
+                </f:facet>
+                <h:outputText value="#{entry.employeeInfo.name} #{entry.employeeInfo.lastName}" />
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="City" />
+                </f:facet>
+                <h:outputText value="#{entry.destCity}" />
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Departure date" />
+                </f:facet>
+                <h:outputText value="#{entry.departureDate}" />
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Return date" />
+                </f:facet>
+                <h:outputText value="#{entry.returnDate}" />
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText value="Status"/>
+                </f:facet>
+                <h:outputText value="#{entry.status}" />
+            </p:column>
+        </p:dataTable>
+    </h:panelGrid>
+</ui:composition>
