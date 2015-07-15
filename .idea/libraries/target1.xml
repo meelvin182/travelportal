@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="target1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/travel-portal-ejb/target/travel-portal-ejb-client.jar!/" />
+      <root url="jar://$PROJECT_DIR$/travel-portal-ejb/target/travel-portal-ejb.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

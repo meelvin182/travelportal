@@ -1,0 +1,20 @@
+<component name="libraryTable">
+  <library name="lib2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/travel-portal-ear/target/temp/travel-portal-web/WEB-INF/lib/commons-codec-1.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/travel-portal-ear/target/temp/travel-portal-web/WEB-INF/lib/ant-1.6.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/travel-portal-ear/target/temp/travel-portal-web/WEB-INF/lib/jsp-api-2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/travel-portal-ear/target/temp/travel-portal-web/WEB-INF/lib/travel-portal-int-tests-0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/travel-portal-ear/target/temp/travel-portal-web/WEB-INF/lib/ant-junit-1.6.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/travel-portal-ear/target/temp/travel-portal-web/WEB-INF/lib/jstl-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/travel-portal-ear/target/temp/travel-portal-web/WEB-INF/lib/jsf-impl-2.1.11.jar!/" />
+      <root url="jar://$PROJECT_DIR$/travel-portal-ear/target/temp/travel-portal-web/WEB-INF/lib/poi-3.12.jar!/" />
+      <root url="jar://$PROJECT_DIR$/travel-portal-ear/target/temp/travel-portal-web/WEB-INF/lib/servlet-api-2.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/travel-portal-ear/target/temp/travel-portal-web/WEB-INF/lib/junite2-2.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/travel-portal-ear/target/temp/travel-portal-web/WEB-INF/lib/primefaces-5.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/travel-portal-ear/target/temp/travel-portal-web/WEB-INF/lib/jsf-api-2.1.11.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

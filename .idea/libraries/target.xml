@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="target">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/travel-portal-executor/target/travel-portal-executor.jar!/" />
+      <root url="jar://$PROJECT_DIR$/travel-portal-executor/target/travel-portal-executor-jar-with-dependencies.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

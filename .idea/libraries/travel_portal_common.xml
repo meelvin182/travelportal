@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="travel-portal-common">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/travel-portal-common/target/travel-portal-common.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
